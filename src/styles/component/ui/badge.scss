@@ -1,0 +1,30 @@
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+
+  &--blue {
+    background: var(--daeya-blue-light);
+    color: var(--daeya-blue-dark);
+  }
+
+  &--green {
+    background: var(--daeya-green-light);
+    color: #1a7a34;
+  }
+
+  &--red {
+    background: var(--daeya-red-light);
+    color: var(--daeya-red);
+  }
+
+  &--gray {
+    background: var(--daeya-fill-dark);
+    color: var(--daeya-text-sub);
+  }
+}

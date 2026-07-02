@@ -1,0 +1,96 @@
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 52px;
+  padding: 0 20px;
+  border: none;
+  border-radius: var(--daeya-radius-md);
+  font-family: var(--daeya-font);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s, transform 0.12s;
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  &--sm {
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 15px;
+    border-radius: var(--daeya-radius-sm);
+  }
+
+  &--lg {
+    min-height: 56px;
+    padding: 0 24px;
+    font-size: 18px;
+    border-radius: var(--daeya-radius-lg);
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  &--grow {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 100%;
+  }
+
+  &--primary {
+    background: var(--daeya-blue);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: var(--daeya-blue-dark);
+    }
+  }
+
+  &--secondary {
+    background: var(--daeya-fill-dark);
+    color: var(--daeya-text);
+
+    &:hover:not(:disabled) {
+      background: var(--daeya-border-strong);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--daeya-blue);
+
+    &:hover:not(:disabled) {
+      background: var(--daeya-blue-light);
+    }
+  }
+
+  &--danger {
+    background: var(--daeya-red);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: #e0313f;
+    }
+  }
+
+  &--outline {
+    background: var(--daeya-surface);
+    color: var(--daeya-text);
+    box-shadow: inset 0 0 0 1px var(--daeya-border-strong);
+
+    &:hover:not(:disabled) {
+      background: var(--daeya-fill);
+    }
+  }
+}

@@ -1,0 +1,29 @@
+.layout-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.layout-content {
+  flex: 1;
+  min-width: 0;
+  padding: 24px $spacing-base 40px;
+  background: var(--daeya-bg);
+}
+
+.layout-badge {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--daeya-blue-dark);
+  background: var(--daeya-blue-light);
+}

@@ -1,0 +1,40 @@
+// Daeya design tokens (Toss TDS 기반 톤)
+:root {
+  --daeya-blue: #3182f6;
+  --daeya-blue-dark: #1b64da;
+  --daeya-blue-light: #e8f3ff;
+  --daeya-bg: #ffffff;
+  --daeya-surface: #ffffff;
+  --daeya-fill: #f2f4f6;
+  --daeya-fill-dark: #e5e8eb;
+  --daeya-text: #191f28;
+  --daeya-text-sub: #4e5968;
+  --daeya-text-muted: #8b95a1;
+  --daeya-border: #e5e8eb;
+  --daeya-border-strong: #d1d6db;
+  --daeya-red: #f04452;
+  --daeya-red-light: #ffebee;
+  --daeya-green: #30b651;
+  --daeya-green-light: #e8f8ec;
+  --daeya-yellow: #ffc342;
+  --daeya-yellow-light: #fff8e6;
+  --daeya-radius-sm: 10px;
+  --daeya-radius-md: 14px;
+  --daeya-radius-lg: 20px;
+  --daeya-radius-xl: 24px;
+  --daeya-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --daeya-shadow-md: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --daeya-font: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  --color-primary: var(--daeya-blue);
+  --color-text: var(--daeya-text);
+  --color-text-muted: var(--daeya-text-sub);
+  --color-border: var(--daeya-border);
+  --color-bg: var(--daeya-surface);
+  --color-bg-soft: var(--daeya-bg);
+
+  // 레이아웃 참고용 (PagePattern A/B/C)
+  --color-pattern-a: var(--daeya-blue-light);
+  --color-pattern-b: var(--daeya-green-light);
+  --color-pattern-c: var(--daeya-yellow-light);
+}

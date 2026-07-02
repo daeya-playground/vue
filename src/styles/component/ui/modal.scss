@@ -1,0 +1,62 @@
+@use '@/styles/base/size' as *;
+@use '@/styles/component/ui/shared/sheet-transition';
+
+.ui-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+
+  @media (min-width: $breakpoint-md) {
+    align-items: center;
+    padding: 24px;
+  }
+}
+
+.ui-modal {
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow: auto;
+  padding: 28px 24px 24px;
+  border-radius: var(--daeya-radius-xl) var(--daeya-radius-xl) 0 0;
+  background: var(--daeya-surface);
+
+  @media (min-width: $breakpoint-md) {
+    width: calc(100% - 48px);
+    max-width: 400px;
+    padding: 32px 28px 28px;
+    border-radius: var(--daeya-radius-xl);
+    box-shadow: var(--daeya-shadow-md);
+  }
+
+  &__title {
+    margin: 0 0 8px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--daeya-text);
+    letter-spacing: -0.03em;
+  }
+
+  &__body {
+    margin: 0 0 28px;
+    font-size: 16px;
+    color: var(--daeya-text-sub);
+    line-height: 1.55;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    @media (min-width: $breakpoint-md) {
+      flex-direction: row-reverse;
+      justify-content: flex-start;
+      gap: 10px;
+    }
+  }
+}

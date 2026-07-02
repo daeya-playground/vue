@@ -1,0 +1,65 @@
+@use '@/styles/component/ui/shared/field';
+@use '@/styles/component/ui/shared/check-radio';
+
+.ui-option-card {
+  border: 1px solid var(--daeya-border);
+  border-radius: var(--daeya-radius-lg);
+  background: var(--daeya-surface);
+  overflow: hidden;
+
+  &__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 2px 12px;
+    min-height: 56px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--daeya-border);
+    cursor: pointer;
+
+    &--last {
+      border-bottom: none;
+    }
+
+    .ui-radio__box {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      align-self: center;
+    }
+  }
+
+  &__label {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--daeya-text);
+    letter-spacing: -0.02em;
+  }
+
+  &__desc {
+    grid-column: 1;
+    font-size: 13px;
+    color: var(--daeya-text-muted);
+  }
+
+  &__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  &__input:checked ~ .ui-radio__box {
+    border-color: var(--daeya-blue);
+    background: var(--daeya-blue);
+
+    &::after {
+      transform: scale(1);
+    }
+  }
+
+  &__input:focus-visible ~ .ui-radio__box {
+    box-shadow: 0 0 0 3px var(--daeya-blue-light);
+  }
+}

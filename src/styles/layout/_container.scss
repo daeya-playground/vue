@@ -1,0 +1,101 @@
+.layout-left-menu {
+  width: $layout-left-width;
+  flex-shrink: 0;
+  padding: 20px 12px;
+  border-right: 1px solid var(--daeya-border);
+  background: var(--daeya-bg);
+
+  &__title {
+    margin: 0 0 8px;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--daeya-text-muted);
+    letter-spacing: -0.01em;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    a {
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 12px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--daeya-text-sub);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      transition: color 0.12s, background 0.12s;
+
+      &:hover {
+        background: var(--daeya-fill);
+        color: var(--daeya-text);
+      }
+
+      // exact만 활성 — '/' 가 모든 경로에 매칭되는 문제 방지
+      &.router-link-exact-active {
+        font-weight: 600;
+        color: var(--daeya-text);
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          width: 3px;
+          height: 16px;
+          border-radius: 0 2px 2px 0;
+          background: var(--daeya-blue);
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+}
+
+.page-container {
+  max-width: $content-max-width;
+  margin: 0 auto;
+}
+
+// PageLayout — 좌측 메뉴 + 모바일 폭 콘텐츠 (Layout A content 폭)
+.layout-page {
+  .layout-content {
+    padding: 24px 20px 48px;
+  }
+
+  .page-container {
+    width: 100%;
+    max-width: $content-narrow-max-width;
+    margin: 0 auto;
+  }
+}
+
+.page-pattern-a,
+.page-pattern-b,
+.page-pattern-c {
+  padding: $spacing-base;
+  border-radius: var(--daeya-radius-lg);
+  border: 1px dashed var(--daeya-border);
+}
+
+.page-pattern-a {
+  background: var(--color-pattern-a);
+}
+
+.page-pattern-b {
+  background: var(--color-pattern-b);
+}
+
+.page-pattern-c {
+  background: var(--color-pattern-c);
+}

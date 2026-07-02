@@ -1,0 +1,41 @@
+// Input, Textarea 컨트롤 공통
+.ui-input,
+.ui-textarea {
+  width: 100%;
+  padding: 14px 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--daeya-font);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--daeya-text);
+  letter-spacing: -0.02em;
+  transition: color 0.15s;
+
+  &::placeholder {
+    color: var(--daeya-text-muted);
+    font-weight: 400;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &--error {
+    color: var(--daeya-red);
+  }
+
+  &:disabled {
+    color: var(--daeya-text-muted);
+    cursor: not-allowed;
+  }
+}
+
+.ui-textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.55;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}

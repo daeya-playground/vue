@@ -1,0 +1,18 @@
+// 입력 영역 래퍼 — Input, Textarea, Select 공통
+.ui-form-group {
+  padding: 2px 16px;
+  border: 1px solid var(--daeya-border);
+  border-radius: var(--daeya-radius-md);
+  background: var(--daeya-surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:focus-within {
+    border-color: var(--daeya-blue);
+    box-shadow: 0 0 0 3px var(--daeya-blue-light);
+  }
+
+  &--error {
+    border-color: var(--daeya-red);
+    box-shadow: 0 0 0 3px var(--daeya-red-light);
+  }
+}

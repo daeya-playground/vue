@@ -1,0 +1,48 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0 32px;
+  text-align: center;
+
+  &__logo {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  &__lead {
+    margin: 0 0 24px;
+    font-size: 15px;
+    color: var(--daeya-text-sub);
+    line-height: 1.55;
+    letter-spacing: -0.02em;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 16px;
+    border: 1px solid var(--daeya-border);
+    border-radius: var(--daeya-radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--daeya-text);
+    text-decoration: none;
+    background: var(--daeya-surface);
+    transition: background 0.12s, border-color 0.12s;
+
+    &:hover {
+      background: var(--daeya-fill);
+      border-color: var(--daeya-border-strong);
+    }
+  }
+}

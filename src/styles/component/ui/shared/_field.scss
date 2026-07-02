@@ -1,0 +1,28 @@
+// 폼 필드 공통 — label, hint, error
+.ui-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__label {
+    padding-left: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--daeya-text-sub);
+    letter-spacing: -0.01em;
+  }
+
+  &__hint {
+    padding-left: 4px;
+    font-size: 13px;
+    color: var(--daeya-text-muted);
+    line-height: 1.4;
+  }
+
+  &__error {
+    padding-left: 4px;
+    font-size: 13px;
+    color: var(--daeya-red);
+    line-height: 1.4;
+  }
+}

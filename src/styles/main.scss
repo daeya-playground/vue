@@ -1,0 +1,30 @@
+@import './base/reset';
+@import './base/font';
+@import './base/color';
+@import './base/size';
+@import './base/defineBasic';
+@import './layout/common';
+@import './layout/header';
+@import './layout/footer';
+@import './layout/container';
+@import './layout/page-pattern-a';
+@import './utilities/globals';
+
+#app {
+  min-height: 100vh;
+}
+
+body {
+  background: var(--daeya-bg);
+  font-family: var(--daeya-font);
+  color: var(--daeya-text);
+  letter-spacing: -0.01em;
+
+  &.is-scroll-locked {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+}

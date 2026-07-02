@@ -1,0 +1,12 @@
+// 공통 mixin / placeholder (회사 defineBasic 자리)
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

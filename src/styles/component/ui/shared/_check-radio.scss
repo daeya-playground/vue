@@ -1,0 +1,82 @@
+// Checkbox, Radio 공통
+.ui-check,
+.ui-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--daeya-text);
+
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  &__box {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--daeya-border-strong);
+    background: var(--daeya-surface);
+    transition: all 0.15s;
+  }
+
+  input:checked + .ui-check__box,
+  input:checked + .ui-radio__box {
+    border-color: var(--daeya-blue);
+    background: var(--daeya-blue);
+  }
+
+  input:focus-visible + .ui-check__box,
+  input:focus-visible + .ui-radio__box {
+    box-shadow: 0 0 0 3px var(--daeya-blue-light);
+  }
+
+  input:disabled ~ .ui-check__text,
+  input:disabled ~ .ui-radio__text {
+    color: var(--daeya-text-muted);
+  }
+}
+
+.ui-check__box {
+  border-radius: 8px;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 11px;
+    margin: 3px auto 0;
+    border: solid #fff;
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg) scale(0);
+    transition: transform 0.15s;
+  }
+}
+
+.ui-check input:checked + .ui-check__box::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.ui-radio__box {
+  border-radius: 50%;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    margin: 6px auto 0;
+    border-radius: 50%;
+    background: #fff;
+    transform: scale(0);
+    transition: transform 0.15s;
+  }
+}
+
+.ui-radio input:checked + .ui-radio__box::after {
+  transform: scale(1);
+}

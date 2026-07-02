@@ -1,0 +1,30 @@
+@use '@/styles/base/size' as *;
+
+// Modal, Select 공통 — Vue Transition (전역 클래스)
+.ui-sheet-enter-active,
+.ui-sheet-leave-active {
+  transition: opacity 0.2s ease;
+
+  .ui-bottom-sheet,
+  .ui-modal {
+    transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+
+    @media (min-width: $breakpoint-md) {
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  }
+}
+
+.ui-sheet-enter-from,
+.ui-sheet-leave-to {
+  opacity: 0;
+
+  .ui-bottom-sheet,
+  .ui-modal {
+    transform: translateY(100%);
+
+    @media (min-width: $breakpoint-md) {
+      transform: translateY(12px) scale(0.97);
+    }
+  }
+}

@@ -1,0 +1,41 @@
+@use '@/styles/component/ui/shared/field';
+@use '@/styles/component/ui/shared/form-group';
+@use '@/styles/component/ui/shared/bottom-sheet';
+@use '@/styles/component/ui/shared/sheet-transition';
+
+.ui-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--daeya-font);
+  cursor: pointer;
+  text-align: left;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &__value {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--daeya-text);
+    letter-spacing: -0.02em;
+
+    &--placeholder {
+      color: var(--daeya-text-muted);
+      font-weight: 400;
+    }
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    color: var(--daeya-text-muted);
+  }
+}

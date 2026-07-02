@@ -1,0 +1,107 @@
+@use '@/styles/base/size' as *;
+
+// Select 옵션 — 모바일: 바텀시트 / PC: 가운데 팝업 (Modal과 동일 톤)
+.ui-bottom-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+
+  @media (min-width: $breakpoint-md) {
+    align-items: center;
+    padding: 24px;
+  }
+}
+
+.ui-bottom-sheet {
+  width: 100%;
+  max-width: 480px;
+  max-height: 70vh;
+  overflow: auto;
+  padding: 8px 0 24px;
+  border-radius: var(--daeya-radius-xl) var(--daeya-radius-xl) 0 0;
+  background: var(--daeya-surface);
+
+  @media (min-width: $breakpoint-md) {
+    width: calc(100% - 48px);
+    max-width: 400px;
+    max-height: min(70vh, 480px);
+    padding: 12px 0 16px;
+    border-radius: var(--daeya-radius-xl);
+    box-shadow: var(--daeya-shadow-md);
+  }
+
+  &__handle {
+    width: 40px;
+    height: 4px;
+    margin: 8px auto 16px;
+    border-radius: 999px;
+    background: var(--daeya-border-strong);
+
+    @media (min-width: $breakpoint-md) {
+      display: none;
+    }
+  }
+
+  &__title {
+    margin: 0 0 8px;
+    padding: 0 24px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--daeya-text);
+    letter-spacing: -0.03em;
+
+    @media (min-width: $breakpoint-md) {
+      margin-bottom: 12px;
+      padding: 8px 24px 0;
+      font-size: 22px;
+    }
+  }
+}
+
+.ui-option-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 56px;
+    padding: 0 24px;
+    border: none;
+    background: transparent;
+    font-family: var(--daeya-font);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--daeya-text);
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    transition: background 0.12s;
+
+    &:hover {
+      background: var(--daeya-fill);
+    }
+
+    &--active {
+      color: var(--daeya-blue);
+      font-weight: 600;
+
+      svg {
+        color: var(--daeya-blue);
+      }
+    }
+
+    @media (min-width: $breakpoint-md) {
+      min-height: 52px;
+      border-radius: var(--daeya-radius-sm);
+      margin: 0 8px;
+      width: calc(100% - 16px);
+    }
+  }
+}

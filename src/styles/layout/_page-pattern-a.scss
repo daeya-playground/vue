@@ -1,0 +1,43 @@
+// Layout A — 콘텐츠 중심 (모바일 웹뷰 / 단일 페이지)
+.layout-pattern-a {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--daeya-bg);
+}
+
+.layout-pattern-a__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--daeya-border);
+  background: var(--daeya-bg);
+}
+
+.layout-pattern-a__back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--daeya-text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+
+  &:hover {
+    color: var(--daeya-blue);
+  }
+}
+
+.layout-pattern-a__content {
+  flex: 1;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
