@@ -9,7 +9,9 @@ import {
   BaseModal,
   BaseTabs,
   BaseTextarea,
+  BaseSelect,
 } from '@/components/ui'
+import { MEMO_STATUS, MEMO_STATUS_OPTIONS } from '@/js/common'
 
 const toast = useToast()
 
@@ -25,6 +27,8 @@ const title = ref('')
 const content = ref('')
 const selectedId = ref(1)
 
+const status = ref('READY')
+
 const crudTabs = [
   { value: 'create', label: 'Create' },
   { value: 'read', label: 'Read' },
@@ -32,7 +36,7 @@ const crudTabs = [
   { value: 'delete', label: 'Delete' },
 ]
 
-/* 비동기 */
+/* 페이지 로드 시 실행 */
 onMounted(async () => {
   getMemos();
 })
@@ -40,15 +44,10 @@ onMounted(async () => {
 const selectedMemo = computed(() => memos.value.find((m) => m.id === selectedId.value))
 const deleteTarget = computed(() => memos.value.find((m) => m.id === deleteTargetId.value))
 
-const statusVariant = {
-  진행중: 'blue',
-  완료: 'green',
-  학습: 'gray',
-}
-
 function resetForm() {
   title.value = ''
   content.value = ''
+  status.value = 'READY'
 }
 
 // GET /api/memos
@@ -76,6 +75,7 @@ function loadSelectedToForm() {
   if (!memo) return
   title.value = memo.title
   content.value = memo.content
+  status.value = memo.status
 }
 
 // POST /api/memos
@@ -91,7 +91,7 @@ async function handleCreate() {
   try {
     const res = await fetch('/api/memos', {
       method: 'POST',
-      body: JSON.stringify({ title: title.value, content: content.value }),
+      body: JSON.stringify({ title: title.value, content: content.value, status: status.value }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -121,7 +121,7 @@ async function handleUpdate() {
   try{
     const res = await fetch(`/api/memos/${selectedId.value}`, {
       method: 'PUT',
-      body: JSON.stringify({ title: title.value, content: content.value }),
+      body: JSON.stringify({ title: title.value, content: content.value, status: status.value }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -179,6 +179,7 @@ function selectMemoForUpdate(id) {
       <div v-if="activeTab === 'create'" class="memo-list__panel">
         <BaseInput v-model="title" label="제목" placeholder="메모 제목" />
         <BaseTextarea v-model="content" label="내용" placeholder="내용을 입력하세요" :rows="4" />
+        <BaseSelect v-model="status" label="상태" :options="MEMO_STATUS_OPTIONS" />
         <BaseButton block @click="handleCreate">저장하기</BaseButton>
         <BaseButton variant="ghost" block @click="resetForm">입력 초기화</BaseButton>
       </div>
@@ -190,7 +191,9 @@ function selectMemoForUpdate(id) {
               <p class="memo-list-items__title">{{ memo.title }}</p>
               <p class="memo-list-items__meta">{{ memo.content }}</p>
             </div>
-            <BaseBadge :variant="statusVariant[memo.status] ?? 'gray'">{{ memo.status }}</BaseBadge>
+            <BaseBadge :variant="MEMO_STATUS[memo.status]?.variant ?? 'gray'">
+              {{ MEMO_STATUS[memo.status]?.label ?? memo.status }}
+            </BaseBadge>
           </li>
         </ul>
         <p v-else class="memo-list__empty">표시할 메모가 없어요.</p>
@@ -209,10 +212,14 @@ function selectMemoForUpdate(id) {
               <p class="memo-list-items__title">{{ memo.title }}</p>
               <p class="memo-list-items__meta">{{ memo.content }}</p>
             </div>
+            <BaseBadge :variant="MEMO_STATUS[memo.status]?.variant ?? 'gray'">
+              {{ MEMO_STATUS[memo.status]?.label ?? memo.status }}
+            </BaseBadge>
           </li>
         </ul>
         <BaseInput v-model="title" label="제목" placeholder="메모 제목" />
         <BaseTextarea v-model="content" label="내용" placeholder="내용을 입력하세요" :rows="4" />
+        <BaseSelect v-model="status" label="상태" :options="MEMO_STATUS_OPTIONS" />
         <BaseButton block @click="handleUpdate">수정 저장</BaseButton>
       </div>
 

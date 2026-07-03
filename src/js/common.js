@@ -20,3 +20,8 @@ export const MEMO_STATUS = {
   DONE:  { label: '완료',   variant: 'green' },
   HOLD:  { label: '보류',   variant: 'gray' }, 
 }
+
+export const MEMO_STATUS_OPTIONS = Object.entries(MEMO_STATUS).map(([value, item]) => ({
+  value,
+  label: item.label,
+}))
