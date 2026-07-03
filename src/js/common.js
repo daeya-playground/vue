@@ -1,6 +1,4 @@
-/**
- * 회사 js/common.js 자리 — 공통 상수·유틸
- */
+/* 공통 상수·유틸 */
 
 export const APP_TITLE = 'playground'
 

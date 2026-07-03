@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useToast } from '@/composables/useToast'
 import '@/styles/pages/memo-list.scss'
 import {
+  BaseAsyncState,
   BaseBadge,
   BaseButton,
   BaseInput,
@@ -12,6 +13,7 @@ import {
   BaseSelect,
 } from '@/components/ui'
 import { MEMO_STATUS, MEMO_STATUS_OPTIONS } from '@/js/common'
+import { getMemos as fetchMemos, createMemo, updateMemo, deleteMemo } from '@/api/memos'
 
 const toast = useToast()
 
@@ -20,8 +22,8 @@ const deleteModalOpen = ref(false)
 const deleteTargetId = ref(null)
 
 const memos = ref([])
-const loading = ref(true)
-const error = ref(null)
+const listLoading = ref(true)
+const listError = ref('')
 
 const title = ref('')
 const content = ref('')
@@ -36,9 +38,8 @@ const crudTabs = [
   { value: 'delete', label: 'Delete' },
 ]
 
-/* 페이지 로드 시 실행 */
-onMounted(async () => {
-  getMemos();
+onMounted(() => {
+  loadMemos()
 })
 
 const selectedMemo = computed(() => memos.value.find((m) => m.id === selectedId.value))
@@ -50,23 +51,21 @@ function resetForm() {
   status.value = 'READY'
 }
 
-// GET /api/memos
-async function getMemos() {
+async function loadMemos({ silent = false } = {}) {
+  if (!silent) {
+    listLoading.value = true
+    listError.value = ''
+  }
+
   try {
-    const res = await fetch('/api/memos', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    if (!res.ok) throw new Error(res.status)
-    memos.value = await res.json()
+    memos.value = await fetchMemos()
   } catch (e) {
     console.error(e)
-    error.value = e.message
-  }
-  finally {
-    loading.value = false
+    listError.value = '목록을 불러올 수 없어요. 잠시 후 다시 시도해 주세요.'
+  } finally {
+    if (!silent) {
+      listLoading.value = false
+    }
   }
 }
 
@@ -78,7 +77,6 @@ function loadSelectedToForm() {
   status.value = memo.status
 }
 
-// POST /api/memos
 async function handleCreate() {
   if (!title.value.trim()) {
     toast.warning('제목을 입력해 주세요')
@@ -88,27 +86,22 @@ async function handleCreate() {
     toast.warning('내용을 입력해 주세요')
     return
   }
+
   try {
-    const res = await fetch('/api/memos', {
-      method: 'POST',
-      body: JSON.stringify({ title: title.value, content: content.value, status: status.value }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    await createMemo({
+      title: title.value,
+      content: content.value,
+      status: status.value,
     })
-    if (!res.ok) throw new Error(res.status)
-    await getMemos();
-    resetForm();
+    await loadMemos({ silent: true })
+    resetForm()
     toast.success('저장했어요')
   } catch (e) {
     console.error(e)
-    error.value = e.message
-  } finally {
-    loading.value = false
+    toast.error('저장하지 못했어요')
   }
 }
 
-// PUT /api/memos/:id
 async function handleUpdate() {
   if (!title.value.trim()) {
     toast.warning('제목을 입력해 주세요')
@@ -118,23 +111,19 @@ async function handleUpdate() {
     toast.warning('내용을 입력해 주세요')
     return
   }
-  try{
-    const res = await fetch(`/api/memos/${selectedId.value}`, {
-      method: 'PUT',
-      body: JSON.stringify({ title: title.value, content: content.value, status: status.value }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+
+  try {
+    await updateMemo(selectedId.value, {
+      title: title.value,
+      content: content.value,
+      status: status.value,
     })
-    if (!res.ok) throw new Error(res.status)
-    await getMemos();
-    resetForm();
+    await loadMemos({ silent: true })
+    resetForm()
     toast.success('수정했어요')
   } catch (e) {
     console.error(e)
-    error.value = e.message
-  } finally {
-    loading.value = false
+    toast.error('수정하지 못했어요')
   }
 }
 
@@ -143,20 +132,15 @@ function openDeleteModal(id) {
   deleteModalOpen.value = true
 }
 
-// DELETE /api/memos/:id
 async function handleDelete() {
-  try{
-    const res = await fetch(`/api/memos/${deleteTargetId.value}`, {
-      method: 'DELETE',
-    })
-    if (!res.ok) throw new Error(res.status)
-    await getMemos();
+  try {
+    await deleteMemo(deleteTargetId.value)
+    await loadMemos({ silent: true })
     toast.success('삭제했어요')
   } catch (e) {
     console.error(e)
-    error.value = e.message
+    toast.error('삭제하지 못했어요')
   } finally {
-    loading.value = false
     deleteModalOpen.value = false
     deleteTargetId.value = null
   }
@@ -185,38 +169,50 @@ function selectMemoForUpdate(id) {
       </div>
 
       <div v-else-if="activeTab === 'read'" class="memo-list__panel">
-        <ul v-if="memos.length" class="memo-list-items">
-          <li v-for="memo in memos" :key="memo.id" class="memo-list-items__item">
-            <div class="memo-list-items__main">
-              <p class="memo-list-items__title">{{ memo.title }}</p>
-              <p class="memo-list-items__meta">{{ memo.content }}</p>
-            </div>
-            <BaseBadge :variant="MEMO_STATUS[memo.status]?.variant ?? 'gray'">
-              {{ MEMO_STATUS[memo.status]?.label ?? memo.status }}
-            </BaseBadge>
-          </li>
-        </ul>
-        <p v-else class="memo-list__empty">표시할 메모가 없어요.</p>
+        <BaseAsyncState
+          :loading="listLoading"
+          :error="listError"
+          @retry="loadMemos"
+        >
+          <ul v-if="memos.length" class="memo-list-items">
+            <li v-for="memo in memos" :key="memo.id" class="memo-list-items__item">
+              <div class="memo-list-items__main">
+                <p class="memo-list-items__title">{{ memo.title }}</p>
+                <p class="memo-list-items__meta">{{ memo.content }}</p>
+              </div>
+              <BaseBadge :variant="MEMO_STATUS[memo.status]?.variant ?? 'gray'">
+                {{ MEMO_STATUS[memo.status]?.label ?? memo.status }}
+              </BaseBadge>
+            </li>
+          </ul>
+          <p v-else class="memo-list__empty">표시할 메모가 없어요.</p>
+        </BaseAsyncState>
       </div>
 
       <div v-else-if="activeTab === 'update'" class="memo-list__panel">
-        <ul class="memo-list-items">
-          <li
-            v-for="memo in memos"
-            :key="memo.id"
-            class="memo-list-items__item memo-list-items__item--selectable"
-            :class="{ 'memo-list-items__item--active': selectedId === memo.id }"
-            @click="selectMemoForUpdate(memo.id)"
-          >
-            <div class="memo-list-items__main">
-              <p class="memo-list-items__title">{{ memo.title }}</p>
-              <p class="memo-list-items__meta">{{ memo.content }}</p>
-            </div>
-            <BaseBadge :variant="MEMO_STATUS[memo.status]?.variant ?? 'gray'">
-              {{ MEMO_STATUS[memo.status]?.label ?? memo.status }}
-            </BaseBadge>
-          </li>
-        </ul>
+        <BaseAsyncState
+          :loading="listLoading"
+          :error="listError"
+          @retry="loadMemos"
+        >
+          <ul class="memo-list-items">
+            <li
+              v-for="memo in memos"
+              :key="memo.id"
+              class="memo-list-items__item memo-list-items__item--selectable"
+              :class="{ 'memo-list-items__item--active': selectedId === memo.id }"
+              @click="selectMemoForUpdate(memo.id)"
+            >
+              <div class="memo-list-items__main">
+                <p class="memo-list-items__title">{{ memo.title }}</p>
+                <p class="memo-list-items__meta">{{ memo.content }}</p>
+              </div>
+              <BaseBadge :variant="MEMO_STATUS[memo.status]?.variant ?? 'gray'">
+                {{ MEMO_STATUS[memo.status]?.label ?? memo.status }}
+              </BaseBadge>
+            </li>
+          </ul>
+        </BaseAsyncState>
         <BaseInput v-model="title" label="제목" placeholder="메모 제목" />
         <BaseTextarea v-model="content" label="내용" placeholder="내용을 입력하세요" :rows="4" />
         <BaseSelect v-model="status" label="상태" :options="MEMO_STATUS_OPTIONS" />
@@ -224,16 +220,22 @@ function selectMemoForUpdate(id) {
       </div>
 
       <div v-else-if="activeTab === 'delete'" class="memo-list__panel">
-        <ul v-if="memos.length" class="memo-list-items">
-          <li v-for="memo in memos" :key="memo.id" class="memo-list-items__item">
-            <div class="memo-list-items__main">
-              <p class="memo-list-items__title">{{ memo.title }}</p>
-              <p class="memo-list-items__meta">{{ memo.content }}</p>
-            </div>
-            <BaseButton variant="danger" size="sm" @click="openDeleteModal(memo.id)">삭제</BaseButton>
-          </li>
-        </ul>
-        <p v-else class="memo-list__empty">삭제할 메모가 없어요.</p>
+        <BaseAsyncState
+          :loading="listLoading"
+          :error="listError"
+          @retry="loadMemos"
+        >
+          <ul v-if="memos.length" class="memo-list-items">
+            <li v-for="memo in memos" :key="memo.id" class="memo-list-items__item">
+              <div class="memo-list-items__main">
+                <p class="memo-list-items__title">{{ memo.title }}</p>
+                <p class="memo-list-items__meta">{{ memo.content }}</p>
+              </div>
+              <BaseButton variant="danger" size="sm" @click="openDeleteModal(memo.id)">삭제</BaseButton>
+            </li>
+          </ul>
+          <p v-else class="memo-list__empty">삭제할 메모가 없어요.</p>
+        </BaseAsyncState>
       </div>
     </BaseTabs>
 
