@@ -14,6 +14,9 @@ export const PRACTICE_PAGES = [
   { name: 'memo-list', label: '메모 목록', path: '/memo-list' },
 ]
 
-export function formatMemoLabel(id, content) {
-  return `${id} — ${content}`
+export const MEMO_STATUS = {
+  READY: { label: '진행전', variant: 'gray' },
+  ING:   { label: '진행중', variant: 'blue' },
+  DONE:  { label: '완료',   variant: 'green' },
+  HOLD:  { label: '보류',   variant: 'gray' }, 
 }
