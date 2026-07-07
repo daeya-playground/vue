@@ -178,11 +178,7 @@ function selectMemoForUpdate(id) {
       </div>
 
       <div v-else-if="activeTab === 'read'" class="memo-list__panel">
-        <BaseSelect
-          v-model="readFilterStatus"
-          label="상태 필터"
-          :options="filterStatusOptions"
-        />
+        <BaseSelect v-model="readFilterStatus" label="상태 필터" :options="filterStatusOptions" />
         <BaseAsyncState
           :loading="listLoading"
           :error="listError"
