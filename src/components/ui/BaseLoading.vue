@@ -1,10 +1,10 @@
 <script setup>
-import '@/styles/component/ui/async-state.scss'
+import "@/styles/component/ui/async-state.scss";
 
 defineProps({
-  message: { type: String, default: '' },
+  message: { type: String, default: "" },
   inline: { type: Boolean, default: false },
-})
+});
 </script>
 
 <template>

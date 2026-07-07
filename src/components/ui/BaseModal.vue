@@ -1,18 +1,18 @@
 <script setup>
-import { useBodyScrollLock } from '@/composables/useBodyScrollLock'
-import BaseButton from './BaseButton.vue'
-import '@/styles/component/ui/modal.scss'
+import { useBodyScrollLock } from "@/composables/useBodyScrollLock";
+import BaseButton from "./BaseButton.vue";
+import "@/styles/component/ui/modal.scss";
 
-const open = defineModel({ type: Boolean, default: false })
+const open = defineModel({ type: Boolean, default: false });
 
 defineProps({
-  title: { type: String, default: '' },
-})
+  title: { type: String, default: "" },
+});
 
-useBodyScrollLock(open)
+useBodyScrollLock(open);
 
 function close() {
-  open.value = false
+  open.value = false;
 }
 </script>
 

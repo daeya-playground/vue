@@ -1,14 +1,14 @@
 <script setup>
-import '@/styles/component/ui/async-state.scss'
-import BaseButton from './BaseButton.vue'
+import "@/styles/component/ui/async-state.scss";
+import BaseButton from "./BaseButton.vue";
 
 defineProps({
   loading: { type: Boolean, default: false },
-  error: { type: String, default: '' },
-  loadingMessage: { type: String, default: '불러오는 중이에요' },
-})
+  error: { type: String, default: "" },
+  loadingMessage: { type: String, default: "불러오는 중이에요" },
+});
 
-defineEmits(['retry'])
+defineEmits(["retry"]);
 </script>
 
 <template>

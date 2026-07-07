@@ -1,13 +1,13 @@
 <script setup>
-import '@/styles/component/ui/badge.scss'
+import "@/styles/component/ui/badge.scss";
 
 defineProps({
   variant: {
     type: String,
-    default: 'blue',
-    validator: (v) => ['blue', 'green', 'red', 'gray'].includes(v),
+    default: "blue",
+    validator: (v) => ["blue", "green", "red", "gray"].includes(v),
   },
-})
+});
 </script>
 
 <template>

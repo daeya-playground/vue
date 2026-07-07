@@ -1,7 +1,7 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-import { APP_TITLE } from '@/js/common'
-import logoUrl from '@/assets/logo.png'
+import { RouterLink } from "vue-router";
+import { APP_TITLE } from "@/js/common";
+import logoUrl from "@/assets/logo.png";
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
-import { useToast } from '@/composables/useToast'
-import '@/styles/pages/memo-list.scss'
+import { computed, onMounted, ref } from "vue";
+import { useToast } from "@/composables/useToast";
+import "@/styles/pages/memo-list.scss";
 import {
   BaseAsyncState,
   BaseBadge,
@@ -11,80 +11,80 @@ import {
   BaseTabs,
   BaseTextarea,
   BaseSelect,
-} from '@/components/ui'
-import { MEMO_STATUS, MEMO_STATUS_OPTIONS } from '@/js/common'
-import { getMemos as fetchMemos, createMemo, updateMemo, deleteMemo } from '@/api/memos'
+} from "@/components/ui";
+import { MEMO_STATUS, MEMO_STATUS_OPTIONS } from "@/js/common";
+import { getMemos as fetchMemos, createMemo, updateMemo, deleteMemo } from "@/api/memos";
 
-const toast = useToast()
+const toast = useToast();
 
-const activeTab = ref('read')
-const deleteModalOpen = ref(false)
-const deleteTargetId = ref(null)
+const activeTab = ref("read");
+const deleteModalOpen = ref(false);
+const deleteTargetId = ref(null);
 
-const memos = ref([])
-const listLoading = ref(true)
-const listError = ref('')
+const memos = ref([]);
+const listLoading = ref(true);
+const listError = ref("");
 
-const title = ref('')
-const content = ref('')
-const selectedId = ref(1)
+const title = ref("");
+const content = ref("");
+const selectedId = ref(1);
 
-const status = ref('READY')
+const status = ref("READY");
 
 const crudTabs = [
-  { value: 'create', label: 'Create' },
-  { value: 'read', label: 'Read' },
-  { value: 'update', label: 'Update' },
-  { value: 'delete', label: 'Delete' },
-]
+  { value: "create", label: "Create" },
+  { value: "read", label: "Read" },
+  { value: "update", label: "Update" },
+  { value: "delete", label: "Delete" },
+];
 
 onMounted(() => {
-  loadMemos()
-})
+  loadMemos();
+});
 
-const selectedMemo = computed(() => memos.value.find((m) => m.id === selectedId.value))
-const deleteTarget = computed(() => memos.value.find((m) => m.id === deleteTargetId.value))
+const selectedMemo = computed(() => memos.value.find((m) => m.id === selectedId.value));
+const deleteTarget = computed(() => memos.value.find((m) => m.id === deleteTargetId.value));
 
 function resetForm() {
-  title.value = ''
-  content.value = ''
-  status.value = 'READY'
+  title.value = "";
+  content.value = "";
+  status.value = "READY";
 }
 
 async function loadMemos({ silent = false } = {}) {
   if (!silent) {
-    listLoading.value = true
-    listError.value = ''
+    listLoading.value = true;
+    listError.value = "";
   }
 
   try {
-    memos.value = await fetchMemos()
+    memos.value = await fetchMemos();
   } catch (e) {
-    console.error(e)
-    listError.value = '목록을 불러올 수 없어요. 잠시 후 다시 시도해 주세요.'
+    console.error(e);
+    listError.value = "목록을 불러올 수 없어요. 잠시 후 다시 시도해 주세요.";
   } finally {
     if (!silent) {
-      listLoading.value = false
+      listLoading.value = false;
     }
   }
 }
 
 function loadSelectedToForm() {
-  const memo = selectedMemo.value
-  if (!memo) return
-  title.value = memo.title
-  content.value = memo.content
-  status.value = memo.status
+  const memo = selectedMemo.value;
+  if (!memo) return;
+  title.value = memo.title;
+  content.value = memo.content;
+  status.value = memo.status;
 }
 
 async function handleCreate() {
   if (!title.value.trim()) {
-    toast.warning('제목을 입력해 주세요')
-    return
+    toast.warning("제목을 입력해 주세요");
+    return;
   }
   if (!content.value.trim()) {
-    toast.warning('내용을 입력해 주세요')
-    return
+    toast.warning("내용을 입력해 주세요");
+    return;
   }
 
   try {
@@ -92,24 +92,24 @@ async function handleCreate() {
       title: title.value,
       content: content.value,
       status: status.value,
-    })
-    await loadMemos({ silent: true })
-    resetForm()
-    toast.success('저장했어요')
+    });
+    await loadMemos({ silent: true });
+    resetForm();
+    toast.success("저장했어요");
   } catch (e) {
-    console.error(e)
-    toast.error('저장하지 못했어요')
+    console.error(e);
+    toast.error("저장하지 못했어요");
   }
 }
 
 async function handleUpdate() {
   if (!title.value.trim()) {
-    toast.warning('제목을 입력해 주세요')
-    return
+    toast.warning("제목을 입력해 주세요");
+    return;
   }
   if (!content.value.trim()) {
-    toast.warning('내용을 입력해 주세요')
-    return
+    toast.warning("내용을 입력해 주세요");
+    return;
   }
 
   try {
@@ -117,38 +117,38 @@ async function handleUpdate() {
       title: title.value,
       content: content.value,
       status: status.value,
-    })
-    await loadMemos({ silent: true })
-    resetForm()
-    toast.success('수정했어요')
+    });
+    await loadMemos({ silent: true });
+    resetForm();
+    toast.success("수정했어요");
   } catch (e) {
-    console.error(e)
-    toast.error('수정하지 못했어요')
+    console.error(e);
+    toast.error("수정하지 못했어요");
   }
 }
 
 function openDeleteModal(id) {
-  deleteTargetId.value = id
-  deleteModalOpen.value = true
+  deleteTargetId.value = id;
+  deleteModalOpen.value = true;
 }
 
 async function handleDelete() {
   try {
-    await deleteMemo(deleteTargetId.value)
-    await loadMemos({ silent: true })
-    toast.success('삭제했어요')
+    await deleteMemo(deleteTargetId.value);
+    await loadMemos({ silent: true });
+    toast.success("삭제했어요");
   } catch (e) {
-    console.error(e)
-    toast.error('삭제하지 못했어요')
+    console.error(e);
+    toast.error("삭제하지 못했어요");
   } finally {
-    deleteModalOpen.value = false
-    deleteTargetId.value = null
+    deleteModalOpen.value = false;
+    deleteTargetId.value = null;
   }
 }
 
 function selectMemoForUpdate(id) {
-  selectedId.value = id
-  loadSelectedToForm()
+  selectedId.value = id;
+  loadSelectedToForm();
 }
 </script>
 
@@ -169,11 +169,7 @@ function selectMemoForUpdate(id) {
       </div>
 
       <div v-else-if="activeTab === 'read'" class="memo-list__panel">
-        <BaseAsyncState
-          :loading="listLoading"
-          :error="listError"
-          @retry="loadMemos"
-        >
+        <BaseAsyncState :loading="listLoading" :error="listError" @retry="loadMemos">
           <ul v-if="memos.length" class="memo-list-items">
             <li v-for="memo in memos" :key="memo.id" class="memo-list-items__item">
               <div class="memo-list-items__main">
@@ -190,11 +186,7 @@ function selectMemoForUpdate(id) {
       </div>
 
       <div v-else-if="activeTab === 'update'" class="memo-list__panel">
-        <BaseAsyncState
-          :loading="listLoading"
-          :error="listError"
-          @retry="loadMemos"
-        >
+        <BaseAsyncState :loading="listLoading" :error="listError" @retry="loadMemos">
           <ul class="memo-list-items">
             <li
               v-for="memo in memos"
@@ -220,18 +212,16 @@ function selectMemoForUpdate(id) {
       </div>
 
       <div v-else-if="activeTab === 'delete'" class="memo-list__panel">
-        <BaseAsyncState
-          :loading="listLoading"
-          :error="listError"
-          @retry="loadMemos"
-        >
+        <BaseAsyncState :loading="listLoading" :error="listError" @retry="loadMemos">
           <ul v-if="memos.length" class="memo-list-items">
             <li v-for="memo in memos" :key="memo.id" class="memo-list-items__item">
               <div class="memo-list-items__main">
                 <p class="memo-list-items__title">{{ memo.title }}</p>
                 <p class="memo-list-items__meta">{{ memo.content }}</p>
               </div>
-              <BaseButton variant="danger" size="sm" @click="openDeleteModal(memo.id)">삭제</BaseButton>
+              <BaseButton variant="danger" size="sm" @click="openDeleteModal(memo.id)"
+                >삭제</BaseButton
+              >
             </li>
           </ul>
           <p v-else class="memo-list__empty">삭제할 메모가 없어요.</p>
@@ -245,7 +235,9 @@ function selectMemoForUpdate(id) {
       </template>
       <template #actions>
         <BaseButton variant="danger" grow size="md" @click="handleDelete">삭제하기</BaseButton>
-        <BaseButton variant="secondary" grow size="md" @click="deleteModalOpen = false">닫기</BaseButton>
+        <BaseButton variant="secondary" grow size="md" @click="deleteModalOpen = false"
+          >닫기</BaseButton
+        >
       </template>
     </BaseModal>
   </div>

@@ -1,8 +1,8 @@
 <script setup>
-import { RouterView } from 'vue-router'
-import AppHeader from './parts/AppHeader.vue'
-import AppFooter from './parts/AppFooter.vue'
-import AppLeftMenu from './parts/AppLeftMenu.vue'
+import { RouterView } from "vue-router";
+import AppHeader from "./parts/AppHeader.vue";
+import AppFooter from "./parts/AppFooter.vue";
+import AppLeftMenu from "./parts/AppLeftMenu.vue";
 </script>
 
 <template>

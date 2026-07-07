@@ -1,24 +1,24 @@
 <script setup>
-import { computed } from 'vue'
-import '@/styles/component/ui/tabs.scss'
+import { computed } from "vue";
+import "@/styles/component/ui/tabs.scss";
 
 const props = defineProps({
   tabs: {
     type: Array,
     required: true,
   },
-})
+});
 
-const active = defineModel({ type: String, default: '' })
+const active = defineModel({ type: String, default: "" });
 
 const current = computed({
-  get: () => active.value || props.tabs[0]?.value || '',
+  get: () => active.value || props.tabs[0]?.value || "",
   set: (v) => {
-    active.value = v
+    active.value = v;
   },
-})
+});
 
-const activeTab = computed(() => props.tabs.find((t) => t.value === current.value))
+const activeTab = computed(() => props.tabs.find((t) => t.value === current.value));
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup>
-import { RouterView } from 'vue-router'
-import AppFooter from './parts/AppFooter.vue'
+import { RouterView } from "vue-router";
+import AppFooter from "./parts/AppFooter.vue";
 </script>
 
 <template>

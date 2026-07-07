@@ -1,16 +1,16 @@
 <script setup>
-import '@/styles/component/ui/input.scss'
+import "@/styles/component/ui/input.scss";
 
-const model = defineModel({ type: [String, Number], default: '' })
+const model = defineModel({ type: [String, Number], default: "" });
 
 defineProps({
-  label: { type: String, default: '' },
-  hint: { type: String, default: '' },
-  error: { type: String, default: '' },
-  placeholder: { type: String, default: '' },
-  type: { type: String, default: 'text' },
+  label: { type: String, default: "" },
+  hint: { type: String, default: "" },
+  error: { type: String, default: "" },
+  placeholder: { type: String, default: "" },
+  type: { type: String, default: "text" },
   disabled: { type: Boolean, default: false },
-})
+});
 </script>
 
 <template>

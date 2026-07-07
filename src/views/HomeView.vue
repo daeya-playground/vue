@@ -1,10 +1,10 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-import { APP_TITLE, PRACTICE_PAGES } from '@/js/common'
-import logoUrl from '@/assets/logo.png'
-import '@/styles/pages/home.scss'
+import { RouterLink } from "vue-router";
+import { APP_TITLE, PRACTICE_PAGES } from "@/js/common";
+import logoUrl from "@/assets/logo.png";
+import "@/styles/pages/home.scss";
 
-const links = PRACTICE_PAGES.filter((page) => page.path !== '/')
+const links = PRACTICE_PAGES.filter((page) => page.path !== "/");
 </script>
 
 <template>

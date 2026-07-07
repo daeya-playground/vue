@@ -1,6 +1,6 @@
 <script setup>
-import { RouterView } from 'vue-router'
-import AppLeftMenu from './parts/AppLeftMenu.vue'
+import { RouterView } from "vue-router";
+import AppLeftMenu from "./parts/AppLeftMenu.vue";
 </script>
 
 <template>

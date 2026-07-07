@@ -41,7 +41,7 @@
     height: 32px;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       border: 2.5px solid var(--daeya-fill-dark);
@@ -51,7 +51,7 @@
     }
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       inset: 9px;
       border-radius: 50%;

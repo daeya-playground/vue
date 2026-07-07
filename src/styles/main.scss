@@ -1,14 +1,14 @@
-@import './base/reset';
-@import './base/font';
-@import './base/color';
-@import './base/size';
-@import './base/defineBasic';
-@import './layout/common';
-@import './layout/header';
-@import './layout/footer';
-@import './layout/container';
-@import './layout/page-pattern-a';
-@import './utilities/globals';
+@import "./base/reset";
+@import "./base/font";
+@import "./base/color";
+@import "./base/size";
+@import "./base/defineBasic";
+@import "./layout/common";
+@import "./layout/header";
+@import "./layout/footer";
+@import "./layout/container";
+@import "./layout/page-pattern-a";
+@import "./utilities/globals";
 
 #app {
   min-height: 100vh;

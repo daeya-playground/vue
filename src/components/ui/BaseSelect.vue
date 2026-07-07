@@ -1,46 +1,44 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { useBodyScrollLock } from '@/composables/useBodyScrollLock'
-import '@/styles/component/ui/select.scss'
+import { computed, ref } from "vue";
+import { useBodyScrollLock } from "@/composables/useBodyScrollLock";
+import "@/styles/component/ui/select.scss";
 
-const model = defineModel({ type: [String, Number], default: '' })
+const model = defineModel({ type: [String, Number], default: "" });
 
 const props = defineProps({
-  label: { type: String, default: '' },
-  hint: { type: String, default: '' },
-  error: { type: String, default: '' },
-  placeholder: { type: String, default: '선택해 주세요' },
+  label: { type: String, default: "" },
+  hint: { type: String, default: "" },
+  error: { type: String, default: "" },
+  placeholder: { type: String, default: "선택해 주세요" },
   disabled: { type: Boolean, default: false },
   options: {
     type: Array,
     default: () => [],
   },
-})
+});
 
-const open = ref(false)
+const open = ref(false);
 
-useBodyScrollLock(open)
+useBodyScrollLock(open);
 
 const selectedLabel = computed(() => {
-  const found = props.options.find((opt) => opt.value === model.value)
-  return found?.label ?? props.placeholder
-})
+  const found = props.options.find((opt) => opt.value === model.value);
+  return found?.label ?? props.placeholder;
+});
 
-const hasValue = computed(() =>
-  props.options.some((opt) => opt.value === model.value),
-)
+const hasValue = computed(() => props.options.some((opt) => opt.value === model.value));
 
 function openSheet() {
-  if (!props.disabled) open.value = true
+  if (!props.disabled) open.value = true;
 }
 
 function closeSheet() {
-  open.value = false
+  open.value = false;
 }
 
 function select(value) {
-  model.value = value
-  closeSheet()
+  model.value = value;
+  closeSheet();
 }
 </script>
 
@@ -48,12 +46,7 @@ function select(value) {
   <div class="ui-field">
     <span v-if="label" class="ui-field__label">{{ label }}</span>
     <div class="ui-form-group" :class="{ 'ui-form-group--error': error }">
-      <button
-        type="button"
-        class="ui-select-trigger"
-        :disabled="disabled"
-        @click="openSheet"
-      >
+      <button type="button" class="ui-select-trigger" :disabled="disabled" @click="openSheet">
         <span
           class="ui-select-trigger__value"
           :class="{ 'ui-select-trigger__value--placeholder': !hasValue }"

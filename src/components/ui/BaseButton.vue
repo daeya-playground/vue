@@ -1,22 +1,22 @@
 <script setup>
-import '@/styles/component/ui/button.scss'
+import "@/styles/component/ui/button.scss";
 
 defineProps({
   variant: {
     type: String,
-    default: 'primary',
-    validator: (v) => ['primary', 'secondary', 'ghost', 'danger', 'outline'].includes(v),
+    default: "primary",
+    validator: (v) => ["primary", "secondary", "ghost", "danger", "outline"].includes(v),
   },
   size: {
     type: String,
-    default: 'md',
-    validator: (v) => ['sm', 'md', 'lg'].includes(v),
+    default: "md",
+    validator: (v) => ["sm", "md", "lg"].includes(v),
   },
   block: { type: Boolean, default: false },
   grow: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
-  type: { type: String, default: 'button' },
-})
+  type: { type: String, default: "button" },
+});
 </script>
 
 <template>

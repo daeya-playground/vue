@@ -1,16 +1,16 @@
 <script setup>
-import '@/styles/component/ui/radio-group.scss'
+import "@/styles/component/ui/radio-group.scss";
 
-const model = defineModel({ type: [String, Number], default: '' })
+const model = defineModel({ type: [String, Number], default: "" });
 
 defineProps({
-  label: { type: String, default: '' },
-  hint: { type: String, default: '' },
+  label: { type: String, default: "" },
+  hint: { type: String, default: "" },
   options: {
     type: Array,
     default: () => [],
   },
-})
+});
 </script>
 
 <template>
@@ -25,12 +25,7 @@ defineProps({
       >
         <span class="ui-option-card__label">{{ opt.label }}</span>
         <span v-if="opt.desc" class="ui-option-card__desc">{{ opt.desc }}</span>
-        <input
-          v-model="model"
-          class="ui-option-card__input"
-          type="radio"
-          :value="opt.value"
-        />
+        <input v-model="model" class="ui-option-card__input" type="radio" :value="opt.value" />
         <span class="ui-radio__box" />
       </label>
     </div>

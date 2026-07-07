@@ -1,16 +1,16 @@
 <script setup>
-import '@/styles/component/ui/textarea.scss'
+import "@/styles/component/ui/textarea.scss";
 
-const model = defineModel({ type: String, default: '' })
+const model = defineModel({ type: String, default: "" });
 
 defineProps({
-  label: { type: String, default: '' },
-  hint: { type: String, default: '' },
-  error: { type: String, default: '' },
-  placeholder: { type: String, default: '' },
+  label: { type: String, default: "" },
+  hint: { type: String, default: "" },
+  error: { type: String, default: "" },
+  placeholder: { type: String, default: "" },
   rows: { type: Number, default: 4 },
   disabled: { type: Boolean, default: false },
-})
+});
 </script>
 
 <template>

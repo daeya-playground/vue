@@ -1,6 +1,6 @@
 <script setup>
-import { RouterView } from 'vue-router'
-import AppHeader from './parts/AppHeader.vue'
+import { RouterView } from "vue-router";
+import AppHeader from "./parts/AppHeader.vue";
 </script>
 
 <template>
