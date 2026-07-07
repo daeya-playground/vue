@@ -1,5 +1,6 @@
-export async function getMemos() {
-  const res = await fetch("/api/memos");
+export async function getMemos({ status } = {}) {
+  const qs = status ? `?status=${encodeURIComponent(status)}` : "";
+  const res = await fetch(`/api/memos${qs}`);
   if (!res.ok) throw new Error(String(res.status));
   return await res.json();
 }

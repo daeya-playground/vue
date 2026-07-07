@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useToast } from "@/composables/useToast";
 import "@/styles/pages/memo-list.scss";
 import {
@@ -30,6 +30,9 @@ const content = ref("");
 const selectedId = ref(1);
 
 const status = ref("READY");
+const readFilterStatus = ref("");
+
+const filterStatusOptions = [{ value: "", label: "전체" }, ...MEMO_STATUS_OPTIONS];
 
 const crudTabs = [
   { value: "create", label: "Create" },
@@ -42,6 +45,12 @@ onMounted(() => {
   loadMemos();
 });
 
+watch(readFilterStatus, () => {
+  if (activeTab.value === "read") {
+    loadMemos({ status: readFilterStatus.value || undefined });
+  }
+});
+
 const selectedMemo = computed(() => memos.value.find((m) => m.id === selectedId.value));
 const deleteTarget = computed(() => memos.value.find((m) => m.id === deleteTargetId.value));
 
@@ -51,14 +60,14 @@ function resetForm() {
   status.value = "READY";
 }
 
-async function loadMemos({ silent = false } = {}) {
+async function loadMemos({ silent = false, status } = {}) {
   if (!silent) {
     listLoading.value = true;
     listError.value = "";
   }
 
   try {
-    memos.value = await fetchMemos();
+    memos.value = await fetchMemos(status ? { status } : {});
   } catch (e) {
     console.error(e);
     listError.value = "목록을 불러올 수 없어요. 잠시 후 다시 시도해 주세요.";
@@ -169,7 +178,16 @@ function selectMemoForUpdate(id) {
       </div>
 
       <div v-else-if="activeTab === 'read'" class="memo-list__panel">
-        <BaseAsyncState :loading="listLoading" :error="listError" @retry="loadMemos">
+        <BaseSelect
+          v-model="readFilterStatus"
+          label="상태 필터"
+          :options="filterStatusOptions"
+        />
+        <BaseAsyncState
+          :loading="listLoading"
+          :error="listError"
+          @retry="() => loadMemos({ status: readFilterStatus || undefined })"
+        >
           <ul v-if="memos.length" class="memo-list-items">
             <li v-for="memo in memos" :key="memo.id" class="memo-list-items__item">
               <div class="memo-list-items__main">

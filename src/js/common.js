@@ -16,7 +16,7 @@ export const MEMO_STATUS = {
   READY: { label: "진행전", variant: "gray" },
   ING: { label: "진행중", variant: "blue" },
   DONE: { label: "완료", variant: "green" },
-  HOLD: { label: "보류", variant: "gray" },
+  HOLD: { label: "보류", variant: "red" },
 };
 
 export const MEMO_STATUS_OPTIONS = Object.entries(MEMO_STATUS).map(([value, item]) => ({
