@@ -8,6 +8,7 @@ import {
   BaseButton,
   BaseInput,
   BaseModal,
+  BasePagination,
   BaseTabs,
   BaseTextarea,
   BaseSelect,
@@ -24,6 +25,11 @@ const deleteTargetId = ref(null);
 const memos = ref([]);
 const listLoading = ref(true);
 const listError = ref("");
+const page = ref(1);
+const pageSize = ref(5);
+const total = ref(0);
+
+const totalPages = computed(() => Math.max(1, Math.ceil(total.value / pageSize.value)));
 
 const title = ref("");
 const content = ref("");
@@ -47,7 +53,7 @@ onMounted(() => {
 
 watch(readFilterStatus, () => {
   if (activeTab.value === "read") {
-    loadMemos({ status: readFilterStatus.value || undefined });
+    loadMemos({ status: readFilterStatus.value || undefined, page: 1 });
   }
 });
 
@@ -60,14 +66,25 @@ function resetForm() {
   status.value = "READY";
 }
 
-async function loadMemos({ silent = false, status } = {}) {
+async function loadMemos({ silent = false, status, page: nextPage } = {}) {
   if (!silent) {
     listLoading.value = true;
     listError.value = "";
   }
 
+  const statusFilter = status !== undefined ? status : readFilterStatus.value || undefined;
+  const pageToLoad = nextPage !== undefined ? nextPage : page.value;
+
   try {
-    memos.value = await fetchMemos(status ? { status } : {});
+    const data = await fetchMemos({
+      status: statusFilter,
+      page: pageToLoad,
+      size: pageSize.value,
+    });
+    memos.value = data.items;
+    total.value = data.total;
+    page.value = data.page;
+    pageSize.value = data.size;
   } catch (e) {
     console.error(e);
     listError.value = "목록을 불러올 수 없어요. 잠시 후 다시 시도해 주세요.";
@@ -76,6 +93,11 @@ async function loadMemos({ silent = false, status } = {}) {
       listLoading.value = false;
     }
   }
+}
+
+function goToPage(nextPage) {
+  if (nextPage < 1 || nextPage > totalPages.value) return;
+  loadMemos({ page: nextPage, status: readFilterStatus.value || undefined });
 }
 
 function loadSelectedToForm() {
@@ -182,7 +204,7 @@ function selectMemoForUpdate(id) {
         <BaseAsyncState
           :loading="listLoading"
           :error="listError"
-          @retry="() => loadMemos({ status: readFilterStatus || undefined })"
+          @retry="() => loadMemos({ status: readFilterStatus || undefined, page: page })"
         >
           <ul v-if="memos.length" class="memo-list-items">
             <li v-for="memo in memos" :key="memo.id" class="memo-list-items__item">
@@ -196,6 +218,12 @@ function selectMemoForUpdate(id) {
             </li>
           </ul>
           <p v-else class="memo-list__empty">표시할 메모가 없어요.</p>
+          <BasePagination
+            :page="page"
+            :total-pages="totalPages"
+            :total="total"
+            @update:page="goToPage"
+          />
         </BaseAsyncState>
       </div>
 

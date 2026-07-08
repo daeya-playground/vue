@@ -1,6 +1,10 @@
-export async function getMemos({ status } = {}) {
-  const qs = status ? `?status=${encodeURIComponent(status)}` : "";
-  const res = await fetch(`/api/memos${qs}`);
+export async function getMemos({ status, page = 1, size = 5 } = {}) {
+  const params = new URLSearchParams();
+  if (status) params.set("status", status);
+  params.set("page", String(page));
+  params.set("size", String(size));
+
+  const res = await fetch(`/api/memos?${params.toString()}`);
   if (!res.ok) throw new Error(String(res.status));
   return await res.json();
 }
