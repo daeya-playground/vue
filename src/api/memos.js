@@ -1,6 +1,7 @@
-export async function getMemos({ status, page = 1, size = 5 } = {}) {
+export async function getMemos({ status, keyword, page = 1, size = 5 } = {}) {
   const params = new URLSearchParams();
   if (status) params.set("status", status);
+  if (keyword) params.set("keyword", keyword);
   params.set("page", String(page));
   params.set("size", String(size));
 

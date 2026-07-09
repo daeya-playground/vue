@@ -37,6 +37,7 @@ const selectedId = ref(1);
 
 const status = ref("READY");
 const readFilterStatus = ref("");
+const readKeyword = ref("");
 
 const filterStatusOptions = [{ value: "", label: "전체" }, ...MEMO_STATUS_OPTIONS];
 
@@ -66,18 +67,21 @@ function resetForm() {
   status.value = "READY";
 }
 
-async function loadMemos({ silent = false, status, page: nextPage } = {}) {
+async function loadMemos({ silent = false, status, keyword, page: nextPage } = {}) {
   if (!silent) {
     listLoading.value = true;
     listError.value = "";
   }
 
   const statusFilter = status !== undefined ? status : readFilterStatus.value || undefined;
+  const keywordFilter =
+    keyword !== undefined ? keyword : readKeyword.value.trim() || undefined;
   const pageToLoad = nextPage !== undefined ? nextPage : page.value;
 
   try {
     const data = await fetchMemos({
       status: statusFilter,
+      keyword: keywordFilter,
       page: pageToLoad,
       size: pageSize.value,
     });
@@ -97,7 +101,15 @@ async function loadMemos({ silent = false, status, page: nextPage } = {}) {
 
 function goToPage(nextPage) {
   if (nextPage < 1 || nextPage > totalPages.value) return;
-  loadMemos({ page: nextPage, status: readFilterStatus.value || undefined });
+  loadMemos({
+    silent: true,
+    page: nextPage,
+    status: readFilterStatus.value || undefined,
+  });
+}
+
+function handleSearch() {
+  loadMemos({ page: 1, status: readFilterStatus.value || undefined });
 }
 
 function loadSelectedToForm() {
@@ -200,11 +212,25 @@ function selectMemoForUpdate(id) {
       </div>
 
       <div v-else-if="activeTab === 'read'" class="memo-list__panel">
+        <BaseInput
+          v-model="readKeyword"
+          label="검색"
+          placeholder="제목 또는 내용"
+          @keyup.enter="handleSearch"
+        />
+        <BaseButton block @click="handleSearch">검색하기</BaseButton>
         <BaseSelect v-model="readFilterStatus" label="상태 필터" :options="filterStatusOptions" />
         <BaseAsyncState
           :loading="listLoading"
           :error="listError"
-          @retry="() => loadMemos({ status: readFilterStatus || undefined, page: page })"
+          @retry="
+            () =>
+              loadMemos({
+                status: readFilterStatus || undefined,
+                keyword: readKeyword.trim() || undefined,
+                page: page,
+              })
+          "
         >
           <ul v-if="memos.length" class="memo-list-items">
             <li v-for="memo in memos" :key="memo.id" class="memo-list-items__item">
