@@ -38,8 +38,20 @@ const selectedId = ref(1);
 const status = ref("READY");
 const readFilterStatus = ref("");
 const readKeyword = ref("");
+const readSort = ref("id");
+const readOrder = ref("asc");
 
 const filterStatusOptions = [{ value: "", label: "전체" }, ...MEMO_STATUS_OPTIONS];
+
+const sortOptions = [
+  { value: "id", label: "ID" },
+  { value: "createdAt", label: "등록일" },
+];
+
+const orderOptions = [
+  { value: "asc", label: "오름차순" },
+  { value: "desc", label: "내림차순" },
+];
 
 const crudTabs = [
   { value: "create", label: "Create" },
@@ -58,6 +70,12 @@ watch(readFilterStatus, () => {
   }
 });
 
+watch([readSort, readOrder], () => {
+  if (activeTab.value === "read") {
+    loadMemos({ page: 1 });
+  }
+});
+
 const selectedMemo = computed(() => memos.value.find((m) => m.id === selectedId.value));
 const deleteTarget = computed(() => memos.value.find((m) => m.id === deleteTargetId.value));
 
@@ -67,7 +85,7 @@ function resetForm() {
   status.value = "READY";
 }
 
-async function loadMemos({ silent = false, status, keyword, page: nextPage } = {}) {
+async function loadMemos({ silent = false, status, keyword, sort, order, page: nextPage } = {}) {
   if (!silent) {
     listLoading.value = true;
     listError.value = "";
@@ -76,12 +94,16 @@ async function loadMemos({ silent = false, status, keyword, page: nextPage } = {
   const statusFilter = status !== undefined ? status : readFilterStatus.value || undefined;
   const keywordFilter =
     keyword !== undefined ? keyword : readKeyword.value.trim() || undefined;
+  const sortFilter = sort !== undefined ? sort : readSort.value;
+  const orderFilter = order !== undefined ? order : readOrder.value;
   const pageToLoad = nextPage !== undefined ? nextPage : page.value;
 
   try {
     const data = await fetchMemos({
       status: statusFilter,
       keyword: keywordFilter,
+      sort: sortFilter,
+      order: orderFilter,
       page: pageToLoad,
       size: pageSize.value,
     });
@@ -220,6 +242,8 @@ function selectMemoForUpdate(id) {
         />
         <BaseButton block @click="handleSearch">검색하기</BaseButton>
         <BaseSelect v-model="readFilterStatus" label="상태 필터" :options="filterStatusOptions" />
+        <BaseSelect v-model="readSort" label="정렬 기준" :options="sortOptions" />
+        <BaseSelect v-model="readOrder" label="정렬 방향" :options="orderOptions" />
         <BaseAsyncState
           :loading="listLoading"
           :error="listError"
@@ -228,6 +252,8 @@ function selectMemoForUpdate(id) {
               loadMemos({
                 status: readFilterStatus || undefined,
                 keyword: readKeyword.trim() || undefined,
+                sort: readSort,
+                order: readOrder,
                 page: page,
               })
           "
