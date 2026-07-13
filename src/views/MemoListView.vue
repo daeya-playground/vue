@@ -92,8 +92,7 @@ async function loadMemos({ silent = false, status, keyword, sort, order, page: n
   }
 
   const statusFilter = status !== undefined ? status : readFilterStatus.value || undefined;
-  const keywordFilter =
-    keyword !== undefined ? keyword : readKeyword.value.trim() || undefined;
+  const keywordFilter = keyword !== undefined ? keyword : readKeyword.value.trim() || undefined;
   const sortFilter = sort !== undefined ? sort : readSort.value;
   const orderFilter = order !== undefined ? order : readOrder.value;
   const pageToLoad = nextPage !== undefined ? nextPage : page.value;
@@ -163,7 +162,7 @@ async function handleCreate() {
     toast.success("저장했어요");
   } catch (e) {
     console.error(e);
-    toast.error("저장하지 못했어요");
+    toast.error(e.message || "저장하지 못했어요");
   }
 }
 
@@ -188,7 +187,7 @@ async function handleUpdate() {
     toast.success("수정했어요");
   } catch (e) {
     console.error(e);
-    toast.error("수정하지 못했어요");
+    toast.error(e.message || "수정하지 못했어요");
   }
 }
 
