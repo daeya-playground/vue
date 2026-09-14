@@ -10,6 +10,7 @@ export const PRACTICE_PAGES = [
   { name: "home", label: "홈", path: "/" },
   { name: "ui-example", label: "UI 예시", path: "/ui-example" },
   { name: "memo-list", label: "메모 목록", path: "/memo-list" },
+  { name: "excel-export", label: "엑셀보내기", path: "/excel-export" },
 ];
 
 export const MEMO_STATUS = {

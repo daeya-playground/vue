@@ -19,6 +19,12 @@ export async function getMemos({
   return await res.json();
 }
 
+export async function getMemo(id) {
+  const res = await fetch(`/api/memos/${id}`);
+  await throwIfNotOk(res);
+  return await res.json();
+}
+
 async function throwIfNotOk(res) {
   if (res.ok) return;
 

@@ -25,6 +25,11 @@ const router = createRouter({
           name: "memo-list",
           component: () => import("@/views/MemoListView.vue"),
         },
+        {
+          path: "excel-export",
+          name: "excel-export",
+          component: () => import("@/views/ExcelExportView.vue"),
+        },
       ],
     },
   ],
